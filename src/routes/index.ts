@@ -5,5 +5,6 @@ const route = express.Router();
 
 route.use('/user', userRoute);
 route.use('/class', classRoute);
+route.use('/attendance', )
 
 export default route;

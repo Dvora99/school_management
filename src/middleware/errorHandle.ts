@@ -27,4 +27,5 @@ const errorHandler = (err, req, res) => {
 
 export default function (err, req, res, next) {
   return errorHandler(err, req, res);
+  return next(err);
 }

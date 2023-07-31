@@ -1,6 +1,8 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/db';
 import User from './userModel';
+import { appError } from '../utils/errorHelper';
+import errorType from '../utils/errorType';
 
 const Class = db.define('Class',{
   id: {
@@ -40,7 +42,8 @@ User.hasMany(Class, { foreignKey: 'classTeacher' });
 
 Class.beforeCreate(async (value:any) => {
   const data:any = await User.findByPk(value.classTeacher);
-  if(data.roles !== 'Principal') throw new Error('Not valid');
+  if(!data) throw new appError(errorType.bad_request, 'Data not found !!');
+  if(data.roles !== 'Teacher') throw new appError(errorType.bad_request, 'You can not access this feild');
   value.save();
 });
 
