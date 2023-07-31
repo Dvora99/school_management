@@ -1,0 +1,7 @@
+export default {
+  NOT_FOUND: 404,
+  FORBIDDEN: 403,
+  UNAUTHORIZED: 401,
+  BAD_REQUEST: 400,
+  SUCCESS: 200
+};
