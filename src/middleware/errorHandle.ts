@@ -20,6 +20,9 @@ const errorHandler = (err, req, res) => {
     case errorType.bad_request :
       return errorResponse(err, statusCode.BAD_REQUEST, res);
 
+    case errorType.unique_constraint :
+      return errorResponse(err.errors[0], statusCode.BAD_REQUEST, res);
+
     default :
       return errorResponse(err, statusCode.BAD_REQUEST, res);
   }
@@ -27,5 +30,4 @@ const errorHandler = (err, req, res) => {
 
 export default function (err, req, res, next) {
   return errorHandler(err, req, res);
-  return next(err);
 }

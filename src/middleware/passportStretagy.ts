@@ -22,7 +22,7 @@ passport.use(new Strategy({
         model: Token
       },
     });
-    return done(null, data.roles);
+    return done(null, data);
   }
   catch (err) {
     return done(err, false);
@@ -32,17 +32,20 @@ passport.use(new Strategy({
 const requireAuth = passport.authenticate('jwt', { session: false });
 
 const principalAuth = (req: Request ,res: Response, next: NextFunction) => {
-  if(req.user === 'Principal') return next();
+  const { roles }:any = req.user;
+  if(roles === 'Principal') return next();
   else throw new appError(errorType.bad_request, 'Access denied... Not authorized as Principal !!!');
 };
 
 const teacherAuth = (req: Request ,res: Response, next: NextFunction) => {
-  if(req.user === 'Teacher') return next();
+  const { roles }:any = req.user;
+  if(roles === 'Teacher') return next();
   else throw new appError(errorType.bad_request, 'Access denied... Not authorized as Teacher !!!');
 };
 
 const studentAuth = (req: Request ,res: Response, next: NextFunction) => {
-  if(req.user === 'Student') return next();
+  const { roles }:any = req.user;
+  if(roles === 'Student') return next();
   else throw new appError(errorType.bad_request, 'Access denied... Not authorized as Student !!!');
 };
 

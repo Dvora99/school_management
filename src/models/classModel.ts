@@ -43,8 +43,8 @@ User.hasMany(Class, { foreignKey: 'classTeacher' });
 Class.beforeCreate(async (value:any) => {
   const data:any = await User.findByPk(value.classTeacher);
   if(!data) throw new appError(errorType.bad_request, 'Data not found !!');
-  if(data.roles !== 'Teacher') throw new appError(errorType.bad_request, 'You can not access this feild');
-  value.save();
+  if(data.roles === 'Teacher') return;
+  throw new appError(errorType.bad_request, 'You can not access this feild');
 });
 
 export default Class;

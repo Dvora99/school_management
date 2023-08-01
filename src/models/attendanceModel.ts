@@ -1,8 +1,7 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/db';
 import User from './userModel';
-// import { appError } from '../utils/errorHelper';
-// import errorType from '../utils/errorType';
+import * as dateFormate from '../utils/dateFormate';
 
 const Attendance = db.define('Attendance',{
   id: {
@@ -12,11 +11,11 @@ const Attendance = db.define('Attendance',{
     autoIncrement: true
   },
   date: {
-    type: DataTypes.DATE,
+    type: DataTypes.STRING,
     allowNull: false,
     validate: {
       notEmpty: true
-    }
+    },
   },
   studentID: {
     type: DataTypes.INTEGER,
@@ -30,11 +29,24 @@ const Attendance = db.define('Attendance',{
     }
   },
   status: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false
+    type: DataTypes.ENUM,
+    allowNull: false,
+    values: [ 'absent','present' ]
   }
+}, {
+  timestamps: false,
+  indexes: [
+    {
+      unique: true,
+      fields: [ 'studentID', 'date' ]
+    }
+  ]
 });
 
 User.hasOne(Attendance, { foreignKey: 'studentID' });
+
+Attendance.beforeValidate((value:any) => {
+  value.date = dateFormate.DATE;
+});
 
 export default Attendance;

@@ -6,9 +6,10 @@ config();
 const db = new Sequelize('school_management', 'sarvadhi', 'password' ,{
   port: 5433,
   host: 'localhost',
-  dialect: 'postgres'
+  dialect: 'postgres',
+  logging: false
 });
 
-db.sync();
+db.sync({ alter: true });
 
 export default db;
