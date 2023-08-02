@@ -4,7 +4,8 @@
     "module": "CommonJS",
     "esModuleInterop": true,                       
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "strict": true
   },
   "include": ["src/**/*.ts"],
   "ts-node": {

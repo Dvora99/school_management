@@ -4,6 +4,7 @@ import attendanceController from './attendanceController';
 import lectureController from './lectureController';
 import reportController from './reportController';
 import studentController from './studentController';
+import scheduleController from './scheduleController';
 
 export {
   userController,
@@ -11,5 +12,6 @@ export {
   attendanceController,
   lectureController,
   reportController,
-  studentController
+  studentController,
+  scheduleController
 };

@@ -1,10 +1,16 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import db from '../config/db';
 import User from './userModel';
 import { appError } from '../utils/errorHelper';
 import errorType from '../utils/errorType';
 
-const Class = db.define('Class',{
+interface classAttributes extends Model {
+  name: string;
+  grade: string;
+  classTeacher: number;
+}
+
+const Class = db.define<classAttributes>('Class',{
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -40,8 +46,8 @@ const Class = db.define('Class',{
 
 User.hasMany(Class, { foreignKey: 'classTeacher' });
 
-Class.beforeCreate(async (value:any) => {
-  const data:any = await User.findByPk(value.classTeacher);
+Class.beforeCreate(async value => {
+  const data = await User.findByPk(value.classTeacher);
   if(!data) throw new appError(errorType.bad_request, 'Data not found !!');
   if(data.roles === 'Teacher') return;
   throw new appError(errorType.bad_request, 'You can not access this feild');

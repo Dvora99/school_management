@@ -1,12 +1,13 @@
 import errorType from '../utils/errorType';
 import statusCode from '../constant/statusCode';
+import { NextFunction, Response, Request } from 'express';
 
-const errorResponse = (err, status ,res) => {
+const errorResponse = (err: any, status: number, res: Response) => {
   const obj = { statusCode: status, message: err.message };
   res.status(status).json(obj);
 };
 
-const errorHandler = (err, req, res) => {
+const errorHandler = (err: any, req: Request, res: Response) => {
   switch(err.name) {
     case errorType.validation_error :
       return errorResponse(err.errors[0], statusCode.FORBIDDEN, res);
@@ -28,6 +29,7 @@ const errorHandler = (err, req, res) => {
   }
 };
 
-export default function (err, req, res, next) {
+export default function (err: any, req: Request, res: Response, next: NextFunction) {
   return errorHandler(err, req, res);
+  next(err);
 }

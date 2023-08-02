@@ -1,11 +1,18 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import db from '../config/db';
 import User from './userModel';
 import * as dateFormate from '../utils/dateFormate';
 import { appError } from '../utils/errorHelper';
 import errorType from '../utils/errorType';
 
-const Report = db.define('Reports',{
+interface reportAttributes extends Model {
+  description: string;
+  timestamps: string;
+  student_id: number;
+  teacher_id: number;
+}
+
+const Report = db.define<reportAttributes>('Reports',{
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -46,10 +53,10 @@ const Report = db.define('Reports',{
 User.hasMany(Report, { foreignKey: 'teacher_id' });
 User.hasMany(Report, { foreignKey: 'student_id' });
 
-Report.beforeValidate(async(value:any) => {
+Report.beforeValidate(async value => {
   value.timestamps = dateFormate.TIMESTAPS;
 
-  const data:any = await User.findByPk(value.student_id);
+  const data = await User.findByPk(value.student_id);
   if(!data) throw new appError(errorType.bad_request, 'Data not found !!');
   if(data.roles === 'Student') return;
   throw new appError(errorType.bad_request, 'You only can Report to students !!');

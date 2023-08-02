@@ -1,8 +1,15 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import bcrypt from 'bcrypt';
 import db from '../config/db';
 
-const User = db.define('Users',{
+interface userAttributes extends Model {
+  id: number;
+  userName: string;
+  password: string;
+  roles: 'Principal' | 'Teacher' | 'Student';
+}
+
+const User = db.define<userAttributes>('Users',{
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -34,8 +41,8 @@ const User = db.define('Users',{
   }
 });
 
-User.afterValidate((user:any) => {
-  user.password = bcrypt.hashSync(user.password, 10);
+User.afterValidate(async user => {
+  user.password = await bcrypt.hashSync(user.password, 10);
 });
 
 export default User;

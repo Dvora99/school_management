@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Class from '../models/classModel';
 import responseHandle from '../middleware/responseHandle';
 import { appError } from '../utils/errorHelper';
 import errorType from '../utils/errorType';
 
-const addClass = async (req: Request, res: Response, next) => {
+const addClass = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = await Class.create(req.body);
     return responseHandle.SUCCESS(res, data);
@@ -14,9 +14,9 @@ const addClass = async (req: Request, res: Response, next) => {
   }
 };
 
-const deleteClass = async (req: Request, res: Response, next) => {
+const deleteClass = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const id:any = req.params.id;
+    const id = req.params.id;
     const checkData = await Class.findByPk(id);
 
     if(!checkData) throw new appError(errorType.not_found, 'Data not found... Please check one more time');

@@ -1,11 +1,10 @@
 import express from 'express';
 import { studentController } from '../controllers/index';
-import Roles from '../middleware/passportStretagy';
 
 const route = express.Router();
 
-route.post('/addStudents', [ Roles.requireAuth, Roles.teacherAuth ], studentController.addStudents);
-route.get('/show/:id', [ Roles.requireAuth, Roles.teacherAuth ], studentController.show);
-// route.delete('/deleteClass/:id', [ Roles.requireAuth, Roles.principalAuth ], classController.deleteClass);
+route.post('/addStudents', studentController.addStudents);
+route.get('/show/:id', studentController.show);
+route.delete('/deleteStudent/:id', studentController.deleteStudent);
 
 export default route;

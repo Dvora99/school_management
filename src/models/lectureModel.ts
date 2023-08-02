@@ -1,14 +1,24 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import db from '../config/db';
-import User from './userModel';
 import Class from './classModel';
+import * as dateFormate from '../utils/dateFormate';
 
-const Lecture = db.define('Lectures',{
+interface lectureAttributes extends Model {
+  date: string;
+  weekDay: string;
+  time: string;
+}
+
+const Lecture = db.define<lectureAttributes>('Lectures',{
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     allowNull: false,
     autoIncrement: true
+  },
+  date: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   weekDay: {
     type: DataTypes.STRING,
@@ -29,5 +39,9 @@ const Lecture = db.define('Lectures',{
 });
 
 Class.hasMany(Lecture, { foreignKey: 'class_id' });
+
+Lecture.beforeValidate(value => {
+  value.date = dateFormate.DATE;
+});
 
 export default Lecture;

@@ -1,9 +1,14 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import db from '../config/db';
 import User from './userModel';
 import * as dateFormate from '../utils/dateFormate';
 
-const Attendance = db.define('Attendance',{
+interface attendanceAttributes extends Model {
+  date: string;
+  status: 'absent' | 'present';
+}
+
+const Attendance = db.define<attendanceAttributes>('Attendance',{
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -45,7 +50,7 @@ const Attendance = db.define('Attendance',{
 
 User.hasOne(Attendance, { foreignKey: 'studentID' });
 
-Attendance.beforeValidate((value:any) => {
+Attendance.beforeValidate(value => {
   value.date = dateFormate.DATE;
 });
 

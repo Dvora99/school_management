@@ -13,11 +13,11 @@ passport.use(new Strategy({
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.SECRET_KEY,
   passReqToCallback: true
-}, async (req, user, done) => {
+}, async (req: Request, user: any, done: any) => {
   try {
-    const { roles } = user;
-    const data:any = await User.findOne({
-      where: { roles },
+    const { id } = user;
+    const data = await User.findOne({
+      where: { id },
       include: {
         model: Token
       },
@@ -31,23 +31,20 @@ passport.use(new Strategy({
 
 const requireAuth = passport.authenticate('jwt', { session: false });
 
-const principalAuth = (req: Request ,res: Response, next: NextFunction) => {
-  const { roles }:any = req.user;
-  if(roles === 'Principal') return next();
-  else throw new appError(errorType.bad_request, 'Access denied... Not authorized as Principal !!!');
+const authorization = (role:string) => (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { roles } = req.user;
+    if(roles === role) return next();
+    throw new appError(errorType.bad_request, `Access denied... Not authorized as ${roles}`);
+  }
+  catch (err) {
+    return next(err);
+  }
 };
 
-const teacherAuth = (req: Request ,res: Response, next: NextFunction) => {
-  const { roles }:any = req.user;
-  if(roles === 'Teacher') return next();
-  else throw new appError(errorType.bad_request, 'Access denied... Not authorized as Teacher !!!');
-};
-
-const studentAuth = (req: Request ,res: Response, next: NextFunction) => {
-  const { roles }:any = req.user;
-  if(roles === 'Student') return next();
-  else throw new appError(errorType.bad_request, 'Access denied... Not authorized as Student !!!');
-};
+const principalAuth = authorization('Principal');
+const teacherAuth = authorization('Teacher');
+const studentAuth = authorization('Student');
 
 export default {
   requireAuth,
