@@ -57,7 +57,7 @@ Report.beforeValidate(async value => {
   value.timestamps = dateFormate.TIMESTAPS;
 
   const data = await User.findByPk(value.student_id);
-  if(!data) throw new appError(errorType.bad_request, 'Data not found !!');
+  if(!data) throw new appError(errorType.bad_request, 'Student not found !!');
   if(data.roles === 'Student') return;
   throw new appError(errorType.bad_request, 'You only can Report to students !!');
 });

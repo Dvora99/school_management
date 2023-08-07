@@ -11,11 +11,11 @@ import scheduleRoute from './scheduleRoute';
 const route = express.Router();
 
 route.use('/user', userRoute);
-route.use('/class', [ Roles.requireAuth, Roles.principalAuth ], classRoute);
-route.use('/attendance', [ Roles.requireAuth, Roles.teacherAuth ], attendanceRoute);
-route.use('/lecture', [ Roles.requireAuth, Roles.teacherAuth ], lectureRoute);
-route.use('/report', [ Roles.requireAuth, Roles.teacherAuth ], reportRoute);
-route.use('/students', [ Roles.requireAuth, Roles.teacherAuth ], studentRoute);
-route.use('/schedule', [ Roles.requireAuth, Roles.studentAuth ] , scheduleRoute);
+route.use('/class', Roles.requireAuth, classRoute);
+route.use('/attendance', Roles.requireAuth, attendanceRoute);
+route.use('/lecture', Roles.requireAuth, lectureRoute);
+route.use('/report', Roles.requireAuth, reportRoute);
+route.use('/students', Roles.requireAuth, studentRoute);
+route.use('/schedule', Roles.requireAuth, scheduleRoute);
 
 export default route;

@@ -5,6 +5,7 @@ import Class from './classModel';
 import { appError } from '../utils/errorHelper';
 import errorType from '../utils/errorType';
 import Lecture from './lectureModel';
+import Attendance from './attendanceModel';
 
 interface studentAttribute extends Model {
   teacher_id: number;
@@ -63,11 +64,12 @@ const Student = db.define<studentAttribute>('Students',{
 Class.hasMany(Student, { foreignKey: 'class_id' });
 User.hasMany(Student, { foreignKey: 'teacher_id' });
 User.hasOne(Student, { foreignKey: 'student_id' });
+Student.hasMany(Lecture, { foreignKey: 'class_id', sourceKey: 'class_id' });
+Student.hasMany(Attendance, { foreignKey: 'studentID', sourceKey: 'student_id' });
 
 Student.belongsTo(User, { foreignKey: 'teacher_id' });
 Student.belongsTo(User, { foreignKey: 'student_id' });
 Student.belongsTo(Class, { foreignKey: 'class_id' });
-Student.belongsTo(Lecture, { foreignKey: 'class_id' });
 
 Student.beforeValidate(async values => {
   const classdata = await Class.findByPk(values.class_id);

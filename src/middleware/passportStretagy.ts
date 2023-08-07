@@ -31,10 +31,10 @@ passport.use(new Strategy({
 
 const requireAuth = passport.authenticate('jwt', { session: false });
 
-const authorization = (role:string) => (req: Request, res: Response, next: NextFunction) => {
+const authorization = (role:string[]) => (req: Request, res: Response, next: NextFunction) => {
   try {
     const { roles } = req.user;
-    if(roles === role) return next();
+    if(role.includes(roles)) return next();
     throw new appError(errorType.bad_request, `Access denied... Not authorized as ${roles}`);
   }
   catch (err) {
@@ -42,13 +42,7 @@ const authorization = (role:string) => (req: Request, res: Response, next: NextF
   }
 };
 
-const principalAuth = authorization('Principal');
-const teacherAuth = authorization('Teacher');
-const studentAuth = authorization('Student');
-
 export default {
   requireAuth,
-  principalAuth,
-  teacherAuth,
-  studentAuth
+  authorization,
 };

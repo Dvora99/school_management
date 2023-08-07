@@ -21,13 +21,21 @@ const User = db.define<userAttributes>('Users',{
     allowNull: false,
     unique: {
       name: '',
-      msg: 'Username must be unique'
+      msg: 'Username already registred !!'
+    },
+    validate: {
+      notEmpty: {
+        msg: 'Please enter your username'
+      }
     }
   },
   password: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
+      notEmpty: {
+        msg: 'Please enter your password'
+      },
       len: {
         args: [ 5, 10 ],
         msg: 'Password length must be from 5 to 10 !!!!'
@@ -37,7 +45,12 @@ const User = db.define<userAttributes>('Users',{
   roles: {
     type: DataTypes.ENUM,
     values: [ 'Principal', 'Teacher', 'Student' ],
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notEmpty: {
+        msg: 'Please enter your role'
+      }
+    }
   }
 });
 

@@ -21,7 +21,7 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = await Student.findAll({
       include: [
-        { model: User },
+        { model: User, attributes: ['userName'] },
         { model: Class }
       ]
     });

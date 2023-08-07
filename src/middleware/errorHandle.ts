@@ -18,9 +18,6 @@ const errorHandler = (err: any, req: Request, res: Response) => {
     case errorType.not_found :
       return errorResponse(err, statusCode.NOT_FOUND, res);
 
-    case errorType.bad_request :
-      return errorResponse(err, statusCode.BAD_REQUEST, res);
-
     case errorType.unique_constraint :
       return errorResponse(err.errors[0], statusCode.BAD_REQUEST, res);
 

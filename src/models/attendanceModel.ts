@@ -49,6 +49,7 @@ const Attendance = db.define<attendanceAttributes>('Attendance',{
 });
 
 User.hasOne(Attendance, { foreignKey: 'studentID' });
+Attendance.belongsTo(User,{ foreignKey: 'studentID' });
 
 Attendance.beforeValidate(value => {
   value.date = dateFormate.DATE;

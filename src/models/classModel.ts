@@ -34,6 +34,10 @@ const Class = db.define<classAttributes>('Class',{
   classTeacher: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    unique: {
+      name: '',
+      msg: 'Teacher already assigned....'
+    },
     validate: {
       notEmpty: true
     },
@@ -46,11 +50,11 @@ const Class = db.define<classAttributes>('Class',{
 
 User.hasMany(Class, { foreignKey: 'classTeacher' });
 
-Class.beforeCreate(async value => {
+Class.beforeValidate(async value => {
   const data = await User.findByPk(value.classTeacher);
   if(!data) throw new appError(errorType.bad_request, 'Data not found !!');
   if(data.roles === 'Teacher') return;
-  throw new appError(errorType.bad_request, 'You can not access this feild');
+  throw new appError(errorType.bad_request, 'Please select teachers...');
 });
 
 export default Class;

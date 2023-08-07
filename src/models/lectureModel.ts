@@ -30,6 +30,10 @@ const Lecture = db.define<lectureAttributes>('Lectures',{
   time: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: {
+      name: '',
+      msg: 'There is already a lecture at this time....'
+    },
     validate: {
       notEmpty: true
     },
@@ -39,6 +43,7 @@ const Lecture = db.define<lectureAttributes>('Lectures',{
 });
 
 Class.hasMany(Lecture, { foreignKey: 'class_id' });
+Lecture.belongsTo(Class, { foreignKey: 'class_id' });
 
 Lecture.beforeValidate(value => {
   value.date = dateFormate.DATE;
