@@ -1,13 +1,16 @@
-import express from 'express';
+import { Router } from 'express';
 import { lectureController } from '../controllers/index';
 import Roles from '../middleware/passportStretagy';
 
-const route = express.Router();
+export default function initRoutes(router: Router) {
+  const route = router;
+  const lecture = new lectureController();
 
-route.post('/addLecture', Roles.authorization(['Teacher']), lectureController.addLecture);
-route.get('/showLecture', Roles.authorization(['Principal']), lectureController.showLecture);
-route.get('/showLectureToTeacher', Roles.authorization(['Teacher']), lectureController.showLectureToTeacher);
-route.delete('/deleteLecture/:id', Roles.authorization(['Teacher']), lectureController.deleteLecture);
-route.put('/updateLecture/:id', Roles.authorization(['Teacher']), lectureController.updateLecture);
+  route.post('/addLecture', Roles.authorization(['Teacher']), lecture.addLecture);
+  route.get('/showLecture', Roles.authorization(['Principal']), lecture.showLecture);
+  route.get('/showLectureToTeacher', Roles.authorization(['Teacher']), lecture.showLectureToTeacher);
+  route.delete('/deleteLecture/:id', Roles.authorization(['Teacher']), lecture.deleteLecture);
+  route.put('/updateLecture/:id', Roles.authorization(['Teacher']), lecture.updateLecture);
 
-export default route;
+  return route;
+}

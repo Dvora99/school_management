@@ -1,9 +1,11 @@
 import { DataTypes, Model } from 'sequelize';
+import { notFoundmessage } from '../middleware/responseHandle';
 import db from '../config/db';
 import User from './userModel';
 import * as dateFormate from '../utils/dateFormate';
 import { appError } from '../utils/errorHelper';
 import errorType from '../utils/errorType';
+import { ROLES } from '../constant/role';
 
 interface reportAttributes extends Model {
   description: string;
@@ -57,8 +59,8 @@ Report.beforeValidate(async value => {
   value.timestamps = dateFormate.TIMESTAPS;
 
   const data = await User.findByPk(value.student_id);
-  if(!data) throw new appError(errorType.bad_request, 'Student not found !!');
-  if(data.roles === 'Student') return;
+  if(!data) throw new appError(errorType.bad_request, notFoundmessage('Student'));
+  if(data.roles === ROLES.STUDENT) return;
   throw new appError(errorType.bad_request, 'You only can Report to students !!');
 });
 

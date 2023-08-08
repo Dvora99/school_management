@@ -1,9 +1,13 @@
-import express from 'express';
+import { Router } from 'express';
 import { scheduleController } from '../controllers/index';
 import Roles from '../middleware/passportStretagy';
 
-const route = express.Router();
+export default function initRoutes(router: Router) {
+  const route = router;
+  const schedule = new scheduleController();
 
-route.get('/getSchedule', Roles.authorization(['Student']), scheduleController.getSchedule);
+  route.get('/getSchedule', Roles.authorization(['Student']), schedule.getSchedule);
 
-export default route;
+  return route;
+}
+

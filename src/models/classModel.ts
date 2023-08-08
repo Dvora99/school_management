@@ -1,8 +1,10 @@
 import { DataTypes, Model } from 'sequelize';
+import { notFoundmessage } from '../middleware/responseHandle';
 import db from '../config/db';
 import User from './userModel';
 import { appError } from '../utils/errorHelper';
 import errorType from '../utils/errorType';
+import { ROLES } from '../constant/role';
 
 interface classAttributes extends Model {
   name: string;
@@ -52,8 +54,8 @@ User.hasMany(Class, { foreignKey: 'classTeacher' });
 
 Class.beforeValidate(async value => {
   const data = await User.findByPk(value.classTeacher);
-  if(!data) throw new appError(errorType.bad_request, 'Data not found !!');
-  if(data.roles === 'Teacher') return;
+  if(!data) throw new appError(errorType.bad_request, notFoundmessage('Data'));
+  if(data.roles === ROLES.TEACHER) return;
   throw new appError(errorType.bad_request, 'Please select teachers...');
 });
 

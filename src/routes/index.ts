@@ -1,4 +1,5 @@
-import express from 'express';
+import express, { Express } from 'express';
+import { END_POINT } from '../constant/endpoint';
 import Roles from '../middleware/passportStretagy';
 import userRoute from './userRoute';
 import classRoute from './classRoute';
@@ -10,12 +11,12 @@ import scheduleRoute from './scheduleRoute';
 
 const route = express.Router();
 
-route.use('/user', userRoute);
-route.use('/class', Roles.requireAuth, classRoute);
-route.use('/attendance', Roles.requireAuth, attendanceRoute);
-route.use('/lecture', Roles.requireAuth, lectureRoute);
-route.use('/report', Roles.requireAuth, reportRoute);
-route.use('/students', Roles.requireAuth, studentRoute);
-route.use('/schedule', Roles.requireAuth, scheduleRoute);
-
-export default route;
+export function initRoutes(app: Express) {
+  app.use(END_POINT.USER, userRoute(route));
+  app.use(END_POINT.STUDENTS, Roles.requireAuth, studentRoute(route));
+  app.use(END_POINT.SCHEDULE, Roles.requireAuth, scheduleRoute(route));
+  app.use(END_POINT.REPORT, Roles.requireAuth, reportRoute(route));
+  app.use(END_POINT.LECTURE, Roles.requireAuth, lectureRoute(route));
+  app.use(END_POINT.CLASS, Roles.requireAuth, classRoute(route));
+  app.use(END_POINT.ATTENDANCE, Roles.requireAuth, attendanceRoute(route));
+}

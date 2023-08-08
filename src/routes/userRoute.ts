@@ -1,12 +1,14 @@
-import express from 'express';
+import { Router } from 'express';
 import { userController } from '../controllers/index';
 
-const route = express.Router();
+export default function initRoutes(router: Router) {
+  const route = router;
+  const users = new userController();
 
-route.post('/userInsert', userController.userInsert);
-route.delete('/userDelete/:id', userController.userDelete);
-route.put('/userUpdate/:id', userController.userUpdate);
+  route.post('/userInsert', users.userInsert);
+  route.delete('/userDelete/:id', users.userDelete);
+  route.put('/userUpdate/:id', users.userUpdate);
+  route.post('/userLogin', users.userLogin);
 
-route.post('/userLogin', userController.userLogin);
-
-export default route;
+  return route;
+}

@@ -3,9 +3,11 @@ import db from '../config/db';
 import User from './userModel';
 import Class from './classModel';
 import { appError } from '../utils/errorHelper';
+import { notFoundmessage } from '../middleware/responseHandle';
 import errorType from '../utils/errorType';
 import Lecture from './lectureModel';
 import Attendance from './attendanceModel';
+import { ROLES } from '../constant/role';
 
 interface studentAttribute extends Model {
   teacher_id: number;
@@ -61,7 +63,7 @@ const Student = db.define<studentAttribute>('Students',{
   timestamps: false
 });
 
-Class.hasMany(Student, { foreignKey: 'class_id' });
+Class.hasMany(Student, { foreignKey: 'class_id', sourceKey: 'id' });
 User.hasMany(Student, { foreignKey: 'teacher_id' });
 User.hasOne(Student, { foreignKey: 'student_id' });
 Student.hasMany(Lecture, { foreignKey: 'class_id', sourceKey: 'class_id' });
@@ -73,11 +75,11 @@ Student.belongsTo(Class, { foreignKey: 'class_id' });
 
 Student.beforeValidate(async values => {
   const classdata = await Class.findByPk(values.class_id);
-  if(!classdata) throw new appError(errorType.bad_request, 'Class not found... please enter valid class...');
+  if(!classdata) throw new appError(errorType.bad_request, notFoundmessage('Class'));
 
   const data = await User.findByPk(values.student_id);
-  if(data?.roles === 'Student') return;
-  throw new appError(errorType.bad_request, 'Student not found..Please check one more time....');
+  if(data?.roles === ROLES.STUDENT) return;
+  throw new appError(errorType.bad_request, notFoundmessage('Student'));
 });
 
 export default Student;

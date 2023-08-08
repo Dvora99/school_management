@@ -1,61 +1,59 @@
 import { NextFunction, Request, Response } from 'express';
 import Class from '../models/classModel';
-import responseHandle from '../middleware/responseHandle';
+import { SUCCESS, notFoundmessage } from '../middleware/responseHandle';
 import { appError } from '../utils/errorHelper';
 import errorType from '../utils/errorType';
 
-const addClass = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const data = await Class.create(req.body);
-    return responseHandle.SUCCESS(res, data);
-  }
-  catch (err) {
-    return next(err);
-  }
-};
+class classController {
 
-const viewClass = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const data = await Class.findAll({});
-    if(!data) throw new appError(errorType.not_found, 'There is no class created');
-    return responseHandle.SUCCESS(res, data);
-  }
-  catch (err) {
-    return next(err);
-  }
-};
+  addClass = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await Class.create(req.body);
+      return SUCCESS(res, data);
+    }
+    catch (err) {
+      return next(err);
+    }
+  };
 
-const deleteClass = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const id = req.params.id;
-    const checkData = await Class.findByPk(id);
+  viewClass = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await Class.findAll({});
+      if(!data) throw new appError(errorType.not_found, 'There is no class created');
+      return SUCCESS(res, data);
+    }
+    catch (err) {
+      return next(err);
+    }
+  };
 
-    if(!checkData) throw new appError(errorType.not_found, 'Data not found... Please check one more time');
-    const data = await Class.destroy({ where: { id }});
-    return responseHandle.SUCCESS(res, data);
-  }
-  catch (err) {
-    return next(err);
-  }
-};
+  deleteClass = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = req.params.id;
+      const checkData = await Class.findByPk(id);
 
-const updateClass = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { id } = req.params;
-    const checkData = await Class.findByPk(id);
-    if(!checkData) throw new appError(errorType.not_found, 'Data not found !! Please check one more time');
-    const data = await Class.update(req.body, { where: { id }, returning: true });
-    return responseHandle.SUCCESS(res, data);
+      if(!checkData) throw new appError(errorType.not_found, notFoundmessage('Data'));
+      const data = await Class.destroy({ where: { id }});
+      return SUCCESS(res, data);
+    }
+    catch (err) {
+      return next(err);
+    }
+  };
 
-  }
-  catch (err) {
-    return next(err);
-  }
-};
+  updateClass = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const checkData = await Class.findByPk(id);
+      if(!checkData) throw new appError(errorType.not_found, notFoundmessage('Data'));
+      const data = await Class.update(req.body, { where: { id }, returning: true });
+      return SUCCESS(res, data);
 
-export default {
-  addClass,
-  viewClass,
-  deleteClass,
-  updateClass
-};
+    }
+    catch (err) {
+      return next(err);
+    }
+  };
+}
+
+export default classController;

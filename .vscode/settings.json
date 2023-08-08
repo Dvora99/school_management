@@ -1,0 +1,14 @@
+{
+    "notebook.formatOnSave.enabled": true,
+    "eslint.run": "onSave",
+    "editor.formatOnSave": true,
+    "prettier.bracketSameLine": true,
+    "prettier.withNodeModules": true,
+    "prettier.vueIndentScriptAndStyle": true,
+    "prettier.useTabs": true,
+    "prettier.trailingComma": "all",
+    "prettier.singleQuote": true,
+    "prettier.singleAttributePerLine": true,
+    "editor.formatOnType": true,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+}

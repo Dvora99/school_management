@@ -76,7 +76,7 @@
             2,
             {
                 "words": true,
-                "nonwords": false,
+                "nonwords": false
             }
         ],
         "multiline-ternary": [
@@ -110,6 +110,6 @@
                 "max": 1
             }
         ],
-        "prefer-const": "error",
+        "prefer-const": "error"
     }
 }

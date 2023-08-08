@@ -1,12 +1,15 @@
-import express from 'express';
-import reportController from '../controllers/reportController';
+import { Router } from 'express';
+import { reportController } from '../controllers/index';
 import Roles from '../middleware/passportStretagy';
 
-const route = express.Router();
+export default function initRoutes(router: Router) {
+  const route = router;
+  const report = new reportController();
 
-route.post('/addReport', Roles.authorization(['Teacher']), reportController.addReport);
-route.get('/showReport', Roles.authorization(['Teacher']), reportController.showReport);
-route.delete('/deleteReport/:id', Roles.authorization(['Teacher']), reportController.deleteReport);
-route.put('/updateReport/:id', Roles.authorization(['Teacher']), reportController.updateReport);
+  route.post('/addReport', Roles.authorization(['Teacher']), report.addReport);
+  route.get('/showReport', Roles.authorization(['Teacher']), report.showReport);
+  route.delete('/deleteReport/:id', Roles.authorization(['Teacher']), report.deleteReport);
+  route.put('/updateReport/:id', Roles.authorization(['Teacher']), report.updateReport);
 
-export default route;
+  return route;
+}
