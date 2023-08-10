@@ -45,8 +45,8 @@ const Lecture = db.define<lectureAttributes>('Lectures',{
 Class.hasMany(Lecture, { foreignKey: 'class_id' });
 Lecture.belongsTo(Class, { foreignKey: 'class_id' });
 
-Lecture.beforeValidate(value => {
-  value.date = dateFormate.DATE;
+Lecture.beforeValidate(async value => {
+  value.date = dateFormate.DATE[0];
 });
 
 export default Lecture;

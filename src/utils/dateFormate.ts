@@ -1,9 +1,6 @@
-const today = new Date();
-const year = today.getFullYear();
-const day = today.getDate();
-const month = today.getMonth() + 1;
-const hour = today.getHours();
-const min = today.getMinutes();
+import moment from 'moment';
 
-export const DATE = `${day}-${month}-${year}`;
-export const TIMESTAPS = `${day}-${month}-${year} ${hour}:${min}`;
+moment.defaultFormat = 'DD-MM-YYYY HH:MM';
+
+export const TIMESTAPS = moment().format();
+export const DATE = TIMESTAPS.split(' ');

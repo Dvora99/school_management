@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import bcrypt from 'bcrypt';
 import db from '../config/db';
+import { emptyMessage } from '../middleware/responseHandle';
 
 interface userAttributes extends Model {
   id: number;
@@ -25,7 +26,7 @@ const User = db.define<userAttributes>('Users',{
     },
     validate: {
       notEmpty: {
-        msg: 'Please enter your username'
+        msg: emptyMessage('Username')
       }
     }
   },
@@ -34,7 +35,7 @@ const User = db.define<userAttributes>('Users',{
     allowNull: false,
     validate: {
       notEmpty: {
-        msg: 'Please enter your password'
+        msg: emptyMessage('Password')
       },
       len: {
         args: [ 5, 10 ],
@@ -48,7 +49,7 @@ const User = db.define<userAttributes>('Users',{
     allowNull: false,
     validate: {
       notEmpty: {
-        msg: 'Please enter your role'
+        msg: emptyMessage('Roles')
       }
     }
   }

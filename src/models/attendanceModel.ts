@@ -52,7 +52,7 @@ User.hasOne(Attendance, { foreignKey: 'studentID' });
 Attendance.belongsTo(User,{ foreignKey: 'studentID' });
 
 Attendance.beforeValidate(value => {
-  value.date = dateFormate.DATE;
+  value.date = dateFormate.DATE[0];
 });
 
 export default Attendance;

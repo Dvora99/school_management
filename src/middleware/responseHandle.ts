@@ -8,3 +8,7 @@ export const SUCCESS = (res: Response, data?:any) => {
 export const notFoundmessage = (msg: string) => {
   return `${msg} not found please check one more time....`;
 };
+
+export const emptyMessage = (msg: string) => {
+  return `Please enter your ${msg}`;
+};

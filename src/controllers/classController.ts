@@ -19,7 +19,7 @@ class classController {
   viewClass = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await Class.findAll({});
-      if(!data) throw new appError(errorType.not_found, 'There is no class created');
+      if(!data) throw new appError(errorType.not_found, notFoundmessage('Class'));
       return SUCCESS(res, data);
     }
     catch (err) {
