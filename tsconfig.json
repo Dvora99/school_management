@@ -1,14 +1,16 @@
 {
-  "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
-    "esModuleInterop": true,                       
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "strict": true
-  },
-  "include": ["src/**/*.ts"],
-  "ts-node": {
-    "esm": true
-  }
+	"compilerOptions": {
+		"target": "es2016",
+		"module": "commonjs",
+		"baseUrl": "src",
+		"typeRoots": ["./node_modules/@types", "./your-custom-typings-folder"],
+		"rootDir": "./src",
+		"outDir": "./build",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"skipLibCheck": true,
+		"resolveJsonModule": true
+	},
+	"include": ["src/**/*.ts"],
+	"exclude": ["node_modules", "json-schema"]
 }
